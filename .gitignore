@@ -1,0 +1,5 @@
+go.sum
+*.ini
+*.db
+*.key
+.idea
