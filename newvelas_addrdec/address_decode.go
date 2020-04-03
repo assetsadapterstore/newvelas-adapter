@@ -1,15 +1,14 @@
 package newvelas_addrdec
 
 import (
-	"github.com/blocktree/go-owcdrivers/addressEncoder"
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
 	"github.com/blocktree/go-owcrypt"
 	"github.com/blocktree/openwallet/v2/openwallet"
 	"github.com/mr-tron/base58"
+	"regexp"
 	"strings"
-)
-
-var (
-	alphabet = addressEncoder.BTCAlphabet
 )
 
 //AddressDecoderV2
@@ -26,9 +25,49 @@ func NewAddressDecoder() *AddressDecoderV2 {
 //AddressDecode 地址解析
 func (dec *AddressDecoderV2) AddressDecode(addr string, opts ...interface{}) ([]byte, error) {
 
-	strippedAddress := strings.Replace(addr, "V", "", 1)
+	strippedAddress := strings.TrimPrefix(addr, "V")
+	raw, err := base58.Decode(strippedAddress)
+	if err != nil {
+		return nil, err
+	}
 
-	return base58.Decode(strippedAddress)
+	//无checksum的编码
+	if len(raw) == 20 {
+		return raw, nil
+	}
+
+	decodedAddress := hex.EncodeToString(raw)
+
+	regex := regexp.MustCompile(`([0-9abcdef]+)([0-9abcdef]{8})$`)
+	if !regex.MatchString(decodedAddress) {
+		return nil, fmt.Errorf("invalid decoded address")
+	}
+
+	matches := regex.FindStringSubmatch(decodedAddress)
+	if len(matches) != 3 {
+		return nil, fmt.Errorf("invalid address")
+	}
+
+	for len(matches[1]) > 40 {
+		if strings.HasPrefix(matches[1], "0") {
+			matches[1] = strings.TrimPrefix(matches[1], "0")
+		} else {
+			return nil, fmt.Errorf("invalid match")
+		}
+	}
+
+	checksum := sha(sha(matches[1]))[:8]
+
+	if matches[2] != checksum {
+		return nil, fmt.Errorf("invalid checksum")
+	}
+
+	if len(matches[1]) != 40 {
+		return nil, fmt.Errorf("failed to get eth address")
+	}
+
+	//log.Debugf("checksum: %s", checksum)
+	return hex.DecodeString(matches[1])
 }
 
 //AddressEncode 地址编码
@@ -43,21 +82,42 @@ func (dec *AddressDecoderV2) AddressEncode(hash []byte, opts ...interface{}) (st
 		hash = hash[12:]
 	}
 
-	encodedAddress := base58.Encode(hash)
-
+	checksum := sha(sha(hex.EncodeToString(hash)))[:8]
+	//checksum := owcrypt.Hash(hash, 0, owcrypt.HASH_ALG_DOUBLE_SHA256)[:4]
+	//log.Debugf("checksum: %s", checksum)
+	checksumBytes, _ := hex.DecodeString(checksum)
+	raw := append(hash, checksumBytes...)
+	encodedAddress := base58.Encode(raw)
+	if len(encodedAddress) < 33 {
+		encodedAddress = fmt.Sprintf("%s%s", strings.Repeat("1", 33-len(encodedAddress)), encodedAddress)
+	}
 	return "V" + string(encodedAddress), nil
 }
 
 // AddressVerify 地址校验
 func (dec *AddressDecoderV2) AddressVerify(address string, opts ...interface{}) bool {
-	strippedAddress := strings.Replace(address, "V", "", 1)
 
-	hash, err := base58.Decode(strippedAddress)
+	strippedAddress := strings.TrimPrefix(address, "V")
+	raw, err := base58.Decode(strippedAddress)
 	if err != nil {
 		return false
 	}
-	if len(hash) != 20 {
+
+	//无checksum的编码
+	if len(raw) <= 20 {
 		return false
 	}
+
+	_, err = dec.AddressDecode(address, opts)
+	if err != nil {
+		return false
+	}
+
 	return true
+}
+
+func sha(raw string) string {
+	hasher := sha256.New()
+	hasher.Write([]byte(raw))
+	return hex.EncodeToString(hasher.Sum(nil))
 }

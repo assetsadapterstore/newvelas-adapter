@@ -20,7 +20,6 @@ import (
 	"github.com/assetsadapterstore/newvelas-adapter/newvelas_addrdec"
 	"github.com/blocktree/openwallet/v2/log"
 	"github.com/blocktree/quorum-adapter/quorum"
-	"github.com/mr-tron/base58"
 	"strings"
 )
 
@@ -38,8 +37,8 @@ func NewWalletManager() *WalletManager {
 	wm.Config = quorum.NewConfig(Symbol)
 	wm.Log = log.NewOWLogger(wm.Symbol())
 	wm.Decoder = newvelas_addrdec.NewAddressDecoder()
-	wm.CustomAddressEncodeFunc = CustomAddressEncode
-	wm.CustomAddressDecodeFunc = CustomAddressDecode
+	wm.CustomAddressEncodeFunc = wm.CustomAddressEncode
+	wm.CustomAddressDecodeFunc = wm.CustomAddressDecode
 	return &wm
 }
 
@@ -49,17 +48,20 @@ func (wm *WalletManager) FullName() string {
 }
 
 
-func CustomAddressEncode(address string) string {
+func (wm *WalletManager) CustomAddressEncode(address string) string {
 	hashHex := strings.TrimPrefix(address, "0x")
 	hash, err := hex.DecodeString(hashHex)
 	if err != nil {
 		return address
 	}
-	return "V" + base58.Encode(hash)
+	a, err := wm.Decoder.AddressEncode(hash)
+	if err != nil {
+		return address
+	}
+	return a
 }
-func CustomAddressDecode(address string) string {
-	strippedAddress := strings.Replace(address, "V", "", 1)
-	hash, err := base58.Decode(strippedAddress)
+func (wm *WalletManager) CustomAddressDecode(address string) string {
+	hash, err := wm.Decoder.AddressDecode(address)
 	if err != nil {
 		return address
 	}

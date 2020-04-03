@@ -120,24 +120,23 @@ func testSubmitTransactionStep(tm *openw.WalletManager, rawTx *openwallet.RawTra
 func TestTransfer_NVLX(t *testing.T) {
 
 	addrs := []string{
-		//"V28JLDx5fGyKHjkSv8osDThKAbgFL",
-		//"V2SsjRwtNJw8jFrwTcqbExpWneAs8",
-		//"V3SANmZbz5iqgczgzuJTj2vBy4W5w",
-		//"V3qnhuwfPpxuNvpYV1VbqegzfM48c",
-		//"V4Q26dxNvupBsR7CtYMtBvNvbL8TD",
-		//"V9gCys5ghCixDQR3Je4GPYbAYsVf",
+		"V5MuirQwGU4ZbkND7bFA5GAuXB7pRAoPPJ",
+		"VAawRm8a6LcE8KnATchQH1J3TE8q835oS7",
+		"VFfe3wyFBjRhCEaQDqUAfyNVpHHWnbyrzS",
+		"VHi7NrkGvGpnmNfzdiUaCLj6xHMBFSaGzX",
+		"VJpiujg2e3qNkfiZTzK62Yi9PtuPaeNQNx",
+		"VPYkEt8YFDrD1ULoRJCCMkG26AzeSHF9ts",
 
-		"V23sQLAmMppQmv9XP9S1soUv9vpHm",
 	}
 
 	tm := testInitWalletManager()
 	walletID := "WHA7g1zPhptanzBCavgeYWv35cVg35r2Pk"
-	accountID := "548XHMjmEwdZM2GBKpSd2rSXRGL6ZtvnWeB8yQ5nEAHy"
+	accountID := "BnFN8YZMTKdTC1CsfGGBiaBWW8dD6CNSoxL1AoG54dmZ"
 
 	testGetAssetsAccountBalance(tm, walletID, accountID)
 
 	for _, to := range addrs {
-		rawTx, err := testCreateTransactionStep(tm, walletID, accountID, to, "50", "", nil)
+		rawTx, err := testCreateTransactionStep(tm, walletID, accountID, to, "1", "", nil)
 		if err != nil {
 			return
 		}
@@ -165,8 +164,8 @@ func TestTransfer_NVLX(t *testing.T) {
 func TestSummary_NVLX(t *testing.T) {
 	tm := testInitWalletManager()
 	walletID := "WHA7g1zPhptanzBCavgeYWv35cVg35r2Pk"
-	accountID := "AQAAFicxCvcBGt61iMzdz1BrG4PfmBTJDXJqTUFabrmu"
-	summaryAddress := "V4Fe2NKWCY3pZD9EHCFXQRY6FTYj2"
+	accountID := "56VqKVdYreDLJ11SXES3s8TUHAAEfD23nEVzCSbS9P6w"
+	summaryAddress := "V8aq1aCzKRZsqJb9Apsbdtm1wPkgtQXVdZ"
 
 	testGetAssetsAccountBalance(tm, walletID, accountID)
 
