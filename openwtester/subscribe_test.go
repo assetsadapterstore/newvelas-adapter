@@ -72,8 +72,8 @@ func TestSubscribeAddress_NVLX(t *testing.T) {
 		endRunning = make(chan bool, 1)
 		symbol     = "NVLX"
 		addrs = map[string]string{
-			"V4Fe2NKWCY3pZD9EHCFXQRY6FTYj2": "sender",
-			"V4Q26dxNvupBsR7CtYMtBvNvbL8TD": "receiver",
+			"V23sQLAmMppQmv9XP9S1soUv9vpHm": "sender",
+			"V3Vdq4Q8NRntA4yeZN2BZ4tbKMBR4": "receiver",
 		}
 	)
 
@@ -89,7 +89,7 @@ func TestSubscribeAddress_NVLX(t *testing.T) {
 		return
 	}
 	scanner.SetBlockScanTargetFuncV2(scanTargetFunc)
-	scanner.SetRescanBlockHeight(77935)
+	scanner.SetRescanBlockHeight(38267)
 	scanner.Run()
 
 	<-endRunning

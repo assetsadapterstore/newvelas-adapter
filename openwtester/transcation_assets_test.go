@@ -120,12 +120,14 @@ func testSubmitTransactionStep(tm *openw.WalletManager, rawTx *openwallet.RawTra
 func TestTransfer_NVLX(t *testing.T) {
 
 	addrs := []string{
-		"V28JLDx5fGyKHjkSv8osDThKAbgFL",
-		"V2SsjRwtNJw8jFrwTcqbExpWneAs8",
-		"V3SANmZbz5iqgczgzuJTj2vBy4W5w",
-		"V3qnhuwfPpxuNvpYV1VbqegzfM48c",
-		"V4Q26dxNvupBsR7CtYMtBvNvbL8TD",
-		"V9gCys5ghCixDQR3Je4GPYbAYsVf",
+		//"V28JLDx5fGyKHjkSv8osDThKAbgFL",
+		//"V2SsjRwtNJw8jFrwTcqbExpWneAs8",
+		//"V3SANmZbz5iqgczgzuJTj2vBy4W5w",
+		//"V3qnhuwfPpxuNvpYV1VbqegzfM48c",
+		//"V4Q26dxNvupBsR7CtYMtBvNvbL8TD",
+		//"V9gCys5ghCixDQR3Je4GPYbAYsVf",
+
+		"V23sQLAmMppQmv9XP9S1soUv9vpHm",
 	}
 
 	tm := testInitWalletManager()
@@ -135,7 +137,7 @@ func TestTransfer_NVLX(t *testing.T) {
 	testGetAssetsAccountBalance(tm, walletID, accountID)
 
 	for _, to := range addrs {
-		rawTx, err := testCreateTransactionStep(tm, walletID, accountID, to, "1", "", nil)
+		rawTx, err := testCreateTransactionStep(tm, walletID, accountID, to, "50", "", nil)
 		if err != nil {
 			return
 		}
