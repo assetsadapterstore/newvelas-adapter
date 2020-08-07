@@ -40,7 +40,7 @@ func testGetAssetsAccountTokenBalance(tm *openw.WalletManager, walletID, account
 	log.Info("token balance:", balance.Balance)
 }
 
-func testCreateTransactionStep(tm *openw.WalletManager, walletID, accountID, to, amount, feeRate string, contract *openwallet.SmartContract) (*openwallet.RawTransaction, error) {
+func testCreateTransactionStep(tm *openw.WalletManager, walletID, accountID, to, amount, feeRate string, contract *openwallet.SmartContract, extParam map[string]interface{}) (*openwallet.RawTransaction, error) {
 
 	//err := tm.RefreshAssetsAccountBalance(testApp, accountID)
 	//if err != nil {
@@ -48,7 +48,7 @@ func testCreateTransactionStep(tm *openw.WalletManager, walletID, accountID, to,
 	//	return nil, err
 	//}
 
-	rawTx, err := tm.CreateTransaction(testApp, walletID, accountID, amount, to, feeRate, "", contract)
+	rawTx, err := tm.CreateTransaction(testApp, walletID, accountID, amount, to, feeRate, "", contract, extParam)
 
 	if err != nil {
 		log.Error("CreateTransaction failed, unexpected error:", err)
@@ -121,11 +121,13 @@ func TestTransfer_NVLX(t *testing.T) {
 
 	addrs := []string{
 		"V5MuirQwGU4ZbkND7bFA5GAuXB7pRAoPPJ",
-		"VAawRm8a6LcE8KnATchQH1J3TE8q835oS7",
-		"VFfe3wyFBjRhCEaQDqUAfyNVpHHWnbyrzS",
-		"VHi7NrkGvGpnmNfzdiUaCLj6xHMBFSaGzX",
-		"VJpiujg2e3qNkfiZTzK62Yi9PtuPaeNQNx",
-		"VPYkEt8YFDrD1ULoRJCCMkG26AzeSHF9ts",
+		//"VAawRm8a6LcE8KnATchQH1J3TE8q835oS7",
+		//"VFfe3wyFBjRhCEaQDqUAfyNVpHHWnbyrzS",
+		//"VHi7NrkGvGpnmNfzdiUaCLj6xHMBFSaGzX",
+		//"VJpiujg2e3qNkfiZTzK62Yi9PtuPaeNQNx",
+		//"VPYkEt8YFDrD1ULoRJCCMkG26AzeSHF9ts",
+
+		//"V89B33gvA4evzgn5dzhkoFCToVzQg7uyDw",
 
 	}
 
@@ -136,7 +138,7 @@ func TestTransfer_NVLX(t *testing.T) {
 	testGetAssetsAccountBalance(tm, walletID, accountID)
 
 	for _, to := range addrs {
-		rawTx, err := testCreateTransactionStep(tm, walletID, accountID, to, "1", "", nil)
+		rawTx, err := testCreateTransactionStep(tm, walletID, accountID, to, "0.01", "", nil, nil)
 		if err != nil {
 			return
 		}

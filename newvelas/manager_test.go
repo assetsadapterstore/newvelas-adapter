@@ -106,7 +106,7 @@ func TestWalletManager_GetGasPrice(t *testing.T) {
 
 func TestWalletManager_GetTransactionCount(t *testing.T) {
 	wm := testNewWalletManager()
-	count, err := wm.GetTransactionCount("V9gCys5ghCixDQR3Je4GPYbAYsVf")
+	count, err := wm.GetTransactionCount("VDKUYsuvkg8guGFEfoiz933W76zbkpRYCX")
 	if err != nil {
 		t.Errorf("GetTransactionCount error: %v", err)
 		return

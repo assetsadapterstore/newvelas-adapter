@@ -23,7 +23,7 @@ import (
 
 func TestWalletManager_EthGetTransactionByHash(t *testing.T) {
 	wm := testNewWalletManager()
-	txid := "0xae1e5a3ab5ba582b250a6def0ad280e135c8b4c3c3dfd23ec9d32ebc1243099a"
+	txid := "0xc5db8f0d60f0ef6389adf701bc71aa2654998947d0e01242ad84a3a10bd86173"
 	tx, err := wm.GetTransactionByHash(txid)
 	if err != nil {
 		t.Errorf("get transaction by has failed, err=%v", err)
@@ -34,7 +34,7 @@ func TestWalletManager_EthGetTransactionByHash(t *testing.T) {
 
 func TestWalletManager_ethGetTransactionReceipt(t *testing.T) {
 	wm := testNewWalletManager()
-	txid := "0xae1e5a3ab5ba582b250a6def0ad280e135c8b4c3c3dfd23ec9d32ebc1243099a"
+	txid := "0x5bd342ef41698d1a4665069edfaeb46f5f2f5d43aa1c9e18c5dd9a35cff19f61"
 	tx, err := wm.GetTransactionReceipt(txid)
 	if err != nil {
 		t.Errorf("get transaction by has failed, err=%v", err)

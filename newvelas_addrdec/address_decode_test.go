@@ -24,7 +24,7 @@ func TestAddressDecoder_AddressDecode(t *testing.T) {
 
 func TestAddressDecoderV2_AddressVerify(t *testing.T) {
 	addrdec := NewAddressDecoder()
-	p2pkAddr := "V23sQLAmMppQmv9XP9S1soUv9vpHm"
+	p2pkAddr := "VLN5WGKgiARr4EunANTxSPEWyNdV8NsDWtp"
 	flag := addrdec.AddressVerify(p2pkAddr)
 	t.Logf("flag: %v", flag)
 }
