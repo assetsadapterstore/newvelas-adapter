@@ -127,7 +127,7 @@ func TestTransfer_NVLX(t *testing.T) {
 		//"VJpiujg2e3qNkfiZTzK62Yi9PtuPaeNQNx",
 		//"VPYkEt8YFDrD1ULoRJCCMkG26AzeSHF9ts",
 
-		//"V89B33gvA4evzgn5dzhkoFCToVzQg7uyDw",
+		//"VAv8JRpSs11VMsP5TjyHXu7ACiZLeN7EYc",
 
 	}
 
@@ -138,7 +138,7 @@ func TestTransfer_NVLX(t *testing.T) {
 	testGetAssetsAccountBalance(tm, walletID, accountID)
 
 	for _, to := range addrs {
-		rawTx, err := testCreateTransactionStep(tm, walletID, accountID, to, "0.01", "", nil, nil)
+		rawTx, err := testCreateTransactionStep(tm, walletID, accountID, to, "1", "", nil, nil)
 		if err != nil {
 			return
 		}

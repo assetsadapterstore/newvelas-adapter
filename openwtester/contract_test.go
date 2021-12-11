@@ -67,7 +67,7 @@ func TestSmartContractTransaction(t *testing.T) {
 		"112",
 	}
 
-	rawTx, err := tm.CreateSmartContractTransaction(testApp, walletID, accountID, "", "", &contract, callParam)
+	rawTx, err := tm.CreateSmartContractTransaction(testApp, walletID, accountID, "", "", &contract, callParam, "", 1)
 	if err != nil {
 		t.Errorf("CreateSmartContractTransaction failed, unexpected error: %v", err)
 		return
